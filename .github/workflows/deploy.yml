@@ -1,9 +1,9 @@
-name: Tiny World
+name: Tinier World
 
 on:
   push:
     branches:
-      - main
+      - master
 
 jobs:
   deploy:
