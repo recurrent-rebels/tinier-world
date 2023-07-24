@@ -11,7 +11,7 @@ services:
     environment:
       REDIS_ARGS: --requirepass MvY4bQ7uN3
     volumes:
-      - ./data_redis:/data
+      - data_redis:/data
 
   postgres:
     image: postgres:13.3
@@ -24,7 +24,7 @@ services:
       POSTGRES_PASSWORD: E5rG7tY3fH
       POSTGRES_DB: W9sV6cL2dX
     volumes:
-      - ./data_pg:/var/lib/postgresql/data
+      - data_pg:/var/lib/postgresql/data
 
   pgadmin:
     image: dpage/pgadmin4
@@ -36,4 +36,9 @@ services:
       PGADMIN_DEFAULT_EMAIL: root@root.com
       PGADMIN_DEFAULT_PASSWORD: correct
     volumes:
-      - ./data_admin:/var/lib/pgadmin
+      - data_admin:/var/lib/pgadmin
+
+volumes:
+  data_redis:
+  data_pg:
+  data_admin:
