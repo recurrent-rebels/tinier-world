@@ -9,7 +9,7 @@ services:
       - 9093:9093
       - 29092:29092
     volumes:
-      - ./data_kafka:/bitnami
+      - data_kafka:/bitnami
     environment:
       - KAFKA_ENABLE_KRAFT=yes
       - KAFKA_CFG_PROCESS_ROLES=broker,controller
@@ -35,3 +35,6 @@ services:
       - KAFKA_CLUSTERS_0_NAME=local
       - KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS=kafka:9092
       - DYNAMIC_CONFIG_ENABLED=true
+
+volumes:
+  data_kafka:
