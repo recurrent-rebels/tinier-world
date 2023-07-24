@@ -28,5 +28,4 @@ jobs:
           key: ${{ secrets.SERVER_PRIVATE_KEY }}
           script: |
             cd tinier-world
-            docker compose down
             docker compose -f docker-compose-app.yml -f docker-compose-data.yml -f docker-compose-kafka.yml -f docker-compose-monitor.yml up -d
