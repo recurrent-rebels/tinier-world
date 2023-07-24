@@ -40,7 +40,7 @@ $ sudo chmod +x /usr/local/bin/docker-compose
 $ curl -fsSL https://raw.githubusercontent.com/tilt-dev/tilt/master/scripts/install.sh | bash
 $ tilt up --host 0.0.0.0 --port 10350
 # or use normal docker compose
-$ docker-compose up -d
+$ docker compose -f docker-compose-app.yml -f docker-compose-data.yml -f docker-compose-kafka.yml -f docker-compose-monitor.yml up -d
 ```
 
 ## Services
