@@ -30,7 +30,7 @@ cursor.execute("""
     evnt_stamp INTEGER            DEFAULT extract(epoch from NOW()),
     user_id    INTEGER,
     item_id    UUID,
-    evt_type   VARCHAT(20),
+    evt_type   VARCHAR(20),
     session_id UUID
   ) PARTITION BY RANGE (date_stamp);
 
