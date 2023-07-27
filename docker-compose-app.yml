@@ -7,7 +7,7 @@ services:
     ports:
       - 8080:7777
     volumes:
-      - data_app:/src
+      - .:/src
 
   worker:
     build: .
@@ -16,8 +16,4 @@ services:
     ports:
       - 9965:9965
     volumes:
-      - data_worker:/src
-
-volumes:
-  data_app:
-  data_worker:
+      - .:/src

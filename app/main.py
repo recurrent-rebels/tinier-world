@@ -7,7 +7,7 @@ import time
 
 
 app = fastapi.FastAPI()
-
+print('hi')
 
 @app.on_event("startup")
 async def startup_event():

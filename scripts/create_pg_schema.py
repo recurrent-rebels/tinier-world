@@ -1,12 +1,19 @@
 import psycopg2
 
 
-connection = psycopg2.connect(host="localhost", user="root", port=5432, database="W9sV6cL2dX", password="E5rG7tY3fH")
+connection = psycopg2.connect(
+    host="localhost",
+    user="root",
+    port=5432,
+    database="W9sV6cL2dX",
+    password="E5rG7tY3fH",
+)
 connection.autocommit = True
 cursor = connection.cursor()
 
 
-cursor.execute("""
+cursor.execute(
+    """
   BEGIN;
 
   CREATE TABLE IF NOT EXISTS items (
@@ -22,6 +29,20 @@ cursor.execute("""
     gender    VARCHAR(6),
     country   VARCHAR(20),
     age       INTEGER
+  );
+
+  CREATE TABLE IF NOT EXISTS time_spent_on_item (
+    user_id     INTEGER,
+    item_id     UUID,
+    time_spent  INTEGER,
+    last_item   BOOLEAN,
+    evnt_stamp INTEGER
+  );
+
+  CREATE TABLE IF NOT EXISTS item_embeddings (
+    item_id     UUID,
+    embedding   FLOAT[],
+    time_stamp  TIMESTAMP DEFAULT NOW()
   );
 
   CREATE TABLE IF NOT EXISTS fct_hourly_metric (
@@ -86,7 +107,8 @@ cursor.execute("""
   $$ LANGUAGE plpgsql;
 
   COMMIT;
-""")
+"""
+)
 
 
 cursor.close()

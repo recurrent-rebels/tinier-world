@@ -7,3 +7,5 @@ data_redis
 data_pg
 monitor/grafana
 monitor/prometheus/data
+images
+notebooks/img_samples
