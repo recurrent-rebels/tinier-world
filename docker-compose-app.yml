@@ -9,10 +9,20 @@ services:
     volumes:
       - .:/src
 
+  # faiss_server:
+  #   build: .
+  #   command: uvicorn workers.get_items_from_faiss:app --host 0.0.0.0 --port 6666
+  #   ports:
+  #     - 7777:6666
+  #   volumes:
+  #     - .:/src
+
   worker:
     build: .
     restart: always
     command: python -u workers/kafka_to_pg_logs.py
+    depends_on:
+      - app
     ports:
       - 9965:9965
     volumes:

@@ -120,7 +120,7 @@ def main():
     # if there are more than 5 messages in kafka consumer queue
     if len(store) > 5: 
       insert_to_postgres(store)
-      # compute_time_spent(store)
+      compute_time_spent(store)
       store = []
 
 
