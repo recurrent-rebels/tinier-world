@@ -19,7 +19,6 @@ PG_ERRORS = prometheus_client.Counter("pg_errors", "Postgres Errors")
 
 
 def insert_to_postgres(store):
-  print('calling insert postgres')
   insert_query = """
     INSERT INTO fct_hourly_metric (
       date_stamp,
@@ -74,18 +73,18 @@ def compute_time_spent(store):
           cursor = p.cursor(cursor_factory=DictCursor)
           cursor.execute(get_query)
           evt_logs = cursor.fetchall()
-          print(f'*** evt_logs for session_id {session_id}', evt_logs)
+          # print(f'*** evt_logs for session_id {session_id}', evt_logs)
 
           length = len(evt_logs)
           if length == 1:
-            print("*** Length is 1, skipping")
+            # print("*** Length is 1, skipping")
             continue
           else:
               penultimate_event = evt_logs[-2]
               last_event = evt_logs[-1]
 
               penultimate_event_timestamp = penultimate_event["evnt_stamp"]
-              print(f'*** penultimate_event_timestamp', penultimate_event_timestamp)
+              # print(f'*** penultimate_event_timestamp', penultimate_event_timestamp)
 
               time_diff = last_event["evnt_stamp"] - penultimate_event["evnt_stamp"]
               item_id = penultimate_event["item_id"] # not last_event because last_event can be null with evt_type stop
@@ -99,7 +98,7 @@ def compute_time_spent(store):
                   penultimate_event_timestamp
               ))
           
-      print(f'*** *** time_spent_data', time_spent_data)
+      # print(f'*** *** time_spent_data', time_spent_data)
       cursor_insert = p.cursor()
       cursor_insert.executemany(insert_time_spent_query, time_spent_data)
       PG_INSERTS.inc(len(time_spent_data))

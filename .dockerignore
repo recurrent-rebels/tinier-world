@@ -1,3 +1,11 @@
 .git
 .cache
-images
+images/
+notebooks/
+monitor/
+scripts/
+env/
+workers/kafka_to_pg_logs.sql
+.vscode/
+.github/
+workbench/

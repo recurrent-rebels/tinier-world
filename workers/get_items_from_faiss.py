@@ -30,26 +30,50 @@ def load_embeddings_into_memory():
     img_embeddings = np.array(list(embeddings_dict.values()), dtype=np.float32)
     print('type(img_embeddings)', img_embeddings.shape)
 
+
+def get_select_query(user_id):
+    """
+    Generate a SQL query to fetch the item_id with maximum time spent for a specific user.
+
+    Parameters:
+    user_id (int): The ID of the user.
+
+    Returns:
+    str: A SQL query.
+    """
+    # Parameterized query to prevent SQL injection
+    select_query = f"""
+        SELECT item_id
+        FROM time_spent_on_item
+        WHERE user_id = '{user_id}' AND time_spent = (
+            SELECT MAX(time_spent) 
+            FROM time_spent_on_item 
+            WHERE user_id = '{user_id}'
+        )
+        LIMIT 1;
+    """
+    return select_query
+
+
 @app.get("/")
 def read_root(request: fastapi.Request):
-    # user_id = request.headers.get("user")
-    # select_query = f"SELECT item_id 
-    #     FROM time_spent_on_item 
-    #     WHERE user_id = {user_id} AND time_spent = (
-    #         SELECT MAX(time_spent) 
-    #         FROM time_spent_on_item 
-    #         WHERE user_id = {user_id})
-    #     ;"
-    # cursor.execute(select_query)
-    # longest_seen_item_id = cursor.fetchall()
-    longest_seen_item_id = '5584ba48-4825-40d6-a558-3035287a6718'
+    user_id = request.headers.get("user")
+    select_query = get_select_query(user_id)
+    cursor.execute(select_query)
+    longest_seen_item_id = cursor.fetchall()
+    # print("select_query", select_query)
+    # print("longest_seen_item_id", longest_seen_item_id)
+    if (len(longest_seen_item_id) == 0):
+        return None
+    longest_seen_item_id = longest_seen_item_id[0][0] # [('945a23c6-51be-4359-b717-4d9c8b71d4e2',)] -> '945a23c6-51be-4359-b717-4d9c8b71d4e2'
     global img_embeddings
-    print('img_embeddings.shape', img_embeddings.shape)
+    # print('img_embeddings.shape', img_embeddings.shape)
     index = faiss.IndexFlatL2(dimension)
     index.add(img_embeddings)
     k = 6  # number of nearest neighbours
-    query_vector = embeddings_dict[longest_seen_item_id]
-
+    query_vector = embeddings_dict.get(longest_seen_item_id)
+    if (query_vector == None): # if item is new and we haven't saved it to the db yet 
+        return None
     # Perform similarity search
     D, I = index.search(np.array([query_vector], dtype=np.float32), k+1)
 
@@ -61,5 +85,6 @@ def read_root(request: fastapi.Request):
         top5_recommend_item_id.append(key)
 
     return top5_recommend_item_id
+
 
 load_embeddings_into_memory()

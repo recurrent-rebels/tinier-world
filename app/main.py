@@ -4,7 +4,7 @@ import redis
 import uuid
 import json
 import time
-
+import requests
 
 app = fastapi.FastAPI()
 print('hi')
@@ -26,10 +26,26 @@ def read_root(request: fastapi.Request):
   app.state.r.incr("test_counter")
   user_id = request.headers.get("user")
   session = request.headers.get("session")
+  # connect to FAISS server to get recommended 
 
-  random_item_key = app.state.a.randomkey()
-  random_item_info = app.state.a.hgetall(random_item_key)
-  item_id = random_item_info['id']
+  url = "http://65.21.28.7:8081/"
+  headers = {
+      "user": user_id,
+      "session": session
+  }
+  recommended_items = None
+  try:
+    response = requests.get(url, headers=headers)
+    recommended_items = response.json()
+  except Exception as e:
+    print('Connecting to faiss error:', e)
+  if(bool(recommended_items)):
+    item_id = recommended_items[0]
+    print('recommending item from faiss', item_id)
+  else:
+    random_item_key = app.state.a.randomkey()
+    random_item_info = app.state.a.hgetall(random_item_key)
+    item_id = random_item_info['id']
   ts = int(time.time())
 
   # add to the user reco history of seen items
