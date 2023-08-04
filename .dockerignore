@@ -9,3 +9,7 @@ workers/kafka_to_pg_logs.sql
 .vscode/
 .github/
 workbench/
+training_data/
+text/
+workers/kafka_to_pg_logs.sql
+notebooks/**/wandb/**

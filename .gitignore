@@ -9,3 +9,8 @@ monitor/grafana
 monitor/prometheus/data
 images
 notebooks/img_samples
+dataset
+training_data
+text
+workers/kafka_to_pg_logs.sql
+notebooks/**/wandb/**

@@ -9,7 +9,7 @@ services:
 
   app:
     image: tinier-world-app
-    restart: always
+    # restart: always
     ports:
       - 8080:7777
     volumes:
@@ -31,7 +31,7 @@ services:
   worker:
     #build: .
     image: tinier-world-app
-    restart: always
+    # restart: always
     command: python -u workers/kafka_to_pg_logs.py
     depends_on:
       - app

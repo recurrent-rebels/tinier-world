@@ -61,6 +61,7 @@ def read_root(request: fastapi.Request):
     select_query = get_select_query(user_id)
     cursor.execute(select_query)
     longest_seen_item_id = cursor.fetchall()
+    print('user', user_id)
     # print("select_query", select_query)
     # print("longest_seen_item_id", longest_seen_item_id)
     if (len(longest_seen_item_id) == 0):

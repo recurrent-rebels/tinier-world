@@ -39,6 +39,20 @@ cursor.execute(
     evnt_stamp INTEGER
   );
 
+  CREATE TABLE IF NOT EXISTS time_spent (
+    user_id     INTEGER,
+    item_id     UUID,
+    session_id  UUID,
+    time_spent  INTEGER,
+    last_item   BOOLEAN
+  );
+  
+  CREATE TABLE IF NOT EXISTS sessions (
+    user_id     INTEGER,
+    session_id  UUID,
+    time_spent  INTEGER
+  );
+  
   CREATE TABLE IF NOT EXISTS item_embeddings (
     item_id     UUID,
     embedding   FLOAT[],
